@@ -1,6 +1,6 @@
-#Urna Online em C++ 
+# Urna Online em C++ 
 
-##Funcionamento:
+## Funcionamento:
 1. Registro -> Candidatos para serem votados
 2. Cadastro de candidatos -> Nome e código |Não deixa repetir código dos candidatos|
 3. Votação -> Votar em branco ou no candidato -> Opção de arrumar voto ou anular, caso o usuário tenha digitado o código errado
