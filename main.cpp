@@ -19,6 +19,8 @@ int main ()
 
     //CADASTRO
     int contador;
+    int contador2;
+    int repetidoAuxiliar;
 
     struct candidato
     {
@@ -29,12 +31,21 @@ int main ()
 
     struct candidato prefeito[quantidade];
 
-
     cout << "====== CADASTRO ======" << endl;
     for (contador = 0; contador < quantidade; contador++)
     {
         cout << contador + 1 << ". Nome e Numero: ";
         cin >> prefeito[contador].nome >> prefeito[contador].numero;
+        repetidoAuxiliar = prefeito[contador].numero;
+
+        for (contador2 = 0; contador2 < contador; contador2++) //NAO DEIXAR REPETIR O NUMERO
+        {
+            if (repetidoAuxiliar == prefeito[contador2].numero)
+            {
+                contador--;
+                cout << "Erro: Numero repetido!" << endl;
+            }
+        }
     }
 
     for (contador = 0; contador < quantidade; contador++)
@@ -124,7 +135,6 @@ int main ()
 
 /*
 CORRIGIR BUGS
-- cadastro de nomes e numeros iguais
 - corrigir voto
 
 MELHORAR
