@@ -20,24 +20,31 @@ int main ()
     //CADASTRO
     int contador;
 
-    string candidato[quantidade];
-    int numeroCandidato[quantidade];
-    int votoCandidato[quantidade];
+    struct candidato
+    {
+        string nome;
+        int numero;
+        int voto;
+    };
+
+    struct candidato prefeito[quantidade];
+
+
     cout << "====== CADASTRO ======" << endl;
     for (contador = 0; contador < quantidade; contador++)
     {
         cout << contador + 1 << ". Nome e Numero: ";
-        cin >> candidato[contador] >> numeroCandidato[contador];
+        cin >> prefeito[contador].nome >> prefeito[contador].numero;
     }
 
     for (contador = 0; contador < quantidade; contador++)
     {
-        cout << candidato[contador] << " - " << numeroCandidato[contador] << endl;
+        cout << prefeito[contador].nome << " - " << prefeito[contador].numero << endl;
     }
 
     for (contador = 0; contador < quantidade; contador++) //ZERAR votoCandidato
     {
-        votoCandidato[contador] = 0;
+        prefeito[contador].voto = 0;
     }
 
 
@@ -70,16 +77,16 @@ int main ()
 
             for (contador = 0; contador < quantidade; contador++)
             {
-                if (numeroAuxiliar == numeroCandidato[contador])
+                if (numeroAuxiliar == prefeito[contador].numero)
                 {
-                    cout << "Votar no " << candidato[contador] << " |1| ou ARRUMAR |2|? ";
+                    cout << "Votar no " << prefeito[contador].nome << " |1| ou ARRUMAR |2|? ";
                     cin >> candidatoOuArrumar;
 
                     invalidar = false;
 
                     if (candidatoOuArrumar == 1)
                     {
-                        votoCandidato[contador]++;
+                        prefeito[contador].voto++;
                         cout << "Voto computado!" << endl;
                     }
                 }
@@ -111,17 +118,16 @@ int main ()
 
     for (contador = 0; contador < quantidade; contador++)
     {
-        cout << candidato[contador] << ": " << votoCandidato[contador] << " Votos" << endl;
+        cout << prefeito[contador].nome << ": " << prefeito[contador].voto << " Votos" << endl;
     }
 }
 
 /*
 CORRIGIR BUGS
-- cadastro de numeros iguais
+- cadastro de nomes e numeros iguais
 - corrigir voto
 
 MELHORAR
-- usar struct
 - usar funções
 - usar ponteiros
 */
