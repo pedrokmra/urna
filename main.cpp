@@ -1,46 +1,51 @@
 #include <iostream>
 using namespace std;
 
-int main ()
+typedef struct 
 {
-    //QUANTIDADE de CANDIDATOS
-    int quantidade;
+string nome;
+int numero;
+int voto;
+} candidato;
 
-    cout << "Cadastrar quantos candidatos |MAX 5|? ";
-    cin >> quantidade;
 
-    while (quantidade > 5)
+int limitandoCandidatos (int quantidade)
+{
+    while (quantidade > 5) 
     {
         cout << "Erro: numero de candidatos excedido!" << endl;
         cout << "Cadastrar quantos candidatos |MAX 5|? ";
         cin >> quantidade;
     }
 
+    return quantidade;
+}
 
-    //CADASTRO
-    int contador;
-    int contador2;
-    int repetidoAuxiliar;
 
-    struct candidato
-    {
-        string nome;
-        int numero;
-        int voto;
-    };
+void quantidadeCandidatos (int *quantidade)
+{
+    cout << "Cadastrar quantos candidatos |MAX 5|? ";
+    cin >> *quantidade;
 
-    struct candidato prefeito[quantidade];
+    *quantidade = limitandoCandidatos (*quantidade);
+}
+
+
+void cadastro (int quantidade, candidato *Candidato[quantidade])
+{ 
+    int contador, contador2;
+    int numeroAuxiliar;
 
     cout << "====== CADASTRO ======" << endl;
-    for (contador = 0; contador < quantidade; contador++)
+    for (contador = 0; contador < quantidade; contador++) //CADASTRO
     {
         cout << contador + 1 << ". Nome e Numero: ";
-        cin >> prefeito[contador].nome >> prefeito[contador].numero;
-        repetidoAuxiliar = prefeito[contador].numero;
+        cin >> Candidato[contador] -> nome >> Candidato[contador] -> numero;
+        numeroAuxiliar = Candidato[contador] -> numero;
 
-        for (contador2 = 0; contador2 < contador; contador2++) //NAO DEIXAR REPETIR O NUMERO
+        for (contador2 = 0; contador2 < contador; contador2++) //REPETIÇÃO
         {
-            if (repetidoAuxiliar == prefeito[contador2].numero)
+            if (numeroAuxiliar == Candidato[contador2] -> numero)
             {
                 contador--;
                 cout << "Erro: Numero repetido!" << endl;
@@ -48,34 +53,47 @@ int main ()
         }
     }
 
-    for (contador = 0; contador < quantidade; contador++)
-    {
-        cout << prefeito[contador].nome << " - " << prefeito[contador].numero << endl;
-    }
-
     for (contador = 0; contador < quantidade; contador++) //ZERAR votoCandidato
     {
-        prefeito[contador].voto = 0;
+        Candidato[contador] -> voto = 0;
     }
 
+    for (contador = 0; contador < quantidade; contador++) //IMPRIMIR CANIDATOS
+    {
+        cout << Candidato[contador] -> nome << " - " << Candidato[contador] -> numero << endl; 
+    }
+}
 
-    //VOTAÇÃO
+int continuarVotacao ()
+{
     string querVotar;
-    int candidatoOuBranco;
-    int candidatoOuArrumar;
-    bool invalidar = true;
-    int continuarOuArrumar;
+    cout << "Quer Votar S/N? ";
+    cin >> querVotar;
+    
+    if (querVotar == "S")
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
 
+
+void votacao (int quantidade,  candidato *Candidato[quantidade], int *votoBranco, int *votoNulo)
+{
+    int contador;
     int numeroAuxiliar;
 
-    int votoBranco = 0;
-    int votoInvalido = 0;
-    cout << "====== VOTACAO ======" << endl;
-    cout << "Quer votar S/N? ";
-    cin >> querVotar;
+    bool querVotar = continuarVotacao ();
+    bool invalidar;
+    
+    int candidatoOuBranco;
+    int candidatoOuArrumar;
+    int continuarOuArrumar;
 
-
-    while (querVotar == "S")
+    while (querVotar == true)
     {
         cout << "Quer votar em um CANDIDATO |1| ou em BRANCO |2|? ";
         cin >> candidatoOuBranco;
@@ -86,60 +104,92 @@ int main ()
             cout << "Numero do candidato: ";
             cin >> numeroAuxiliar;
 
-
             for (contador = 0; contador < quantidade; contador++)
             {
-                if (numeroAuxiliar == prefeito[contador].numero)
+                if (numeroAuxiliar == Candidato[contador] -> numero)
                 {
-                    cout << "Votar no " << prefeito[contador].nome << " |1| ou ARRUMAR |2|? ";
+                    cout << "Votar no " << Candidato[contador] -> nome << " |1| ou ARRUMAR |2|? ";
                     cin >> candidatoOuArrumar;
 
                     invalidar = false;
 
-                    if (candidatoOuArrumar == 1)
+                    if (candidatoOuArrumar == 1) 
                     {
-                        prefeito[contador].voto++;
-                        cout << "Voto computado!" << endl;
-                    }
+                        Candidato[contador] -> voto++;
+                        cout << "Voto computado!" << endl; 
+                    } 
+                
                 }
             }
 
-            if (invalidar == true)
+            if (invalidar == true) 
             {
                 cout << "Voto Invalido!" << endl;
                 cout << "CONTINUAR |1| ou ARRUMAR |2|? ";
                 cin >> continuarOuArrumar;
+            
                 if (continuarOuArrumar == 1)
                 {
-                    votoInvalido++;
-                }
+                    *votoNulo = *votoNulo + 1;
+                } 
             }
-        }
 
+        }
         else
         {
-            votoBranco++;
-            cout << "Voto computado!" << endl;
+            *votoBranco = *votoBranco + 1;
+            cout << "Voto em Branco computado!" << endl;
         }
 
-        cout << "Quer votar S/N? ";
-        cin >> querVotar;
-    }
-
-
-    //RESULTADO
-    cout << "====== RESULTADO ======" << endl;
-    cout << "Votos em Branco: " << votoBranco << endl;
-    cout << "Votos em Invalido: " << votoInvalido << endl;
-
-    for (contador = 0; contador < quantidade; contador++)
-    {
-        cout << prefeito[contador].nome << ": " << prefeito[contador].voto << " Votos" << endl;
+        querVotar = continuarVotacao ();
     }
 }
 
-/*
-MELHORAR
-- usar funções
-- usar ponteiros
-*/
+void resultado (int quantidade, candidato *Candidato[quantidade], int *votoBranco, int *votoNulo)
+{
+    int contador; 
+
+    cout << "====== RESULTADO ======" << endl;
+    cout << "Votos em Branco: " << *votoBranco << endl;
+    cout << "Votos em Invalido: " << *votoNulo << endl;
+
+    for (contador = 0; contador < quantidade; contador++)
+    {
+        cout << Candidato[contador] -> nome << ": " << Candidato[contador] -> voto << " Votos" << endl;
+    }
+}
+
+int main () 
+{
+    int quantidade;
+    int *PonteiroQuantidade;
+    PonteiroQuantidade = &quantidade;
+
+
+    int contador;
+
+    int votoBranco = 0;
+    int *PonteiroVotoBranco;
+    PonteiroVotoBranco = &votoBranco;
+
+    int votoNulo = 0;
+    int *PonteiroVotoNulo;
+    PonteiroVotoNulo = &votoNulo;
+
+
+    quantidadeCandidatos (PonteiroQuantidade);
+
+    candidato prefeito[quantidade];
+    candidato *PonteiroPrefeito[quantidade];
+
+    for (contador = 0; contador < quantidade; contador++) //Endereço -> Ponteiro
+    {
+        PonteiroPrefeito[contador] = &prefeito[contador]; 
+    }
+
+    cadastro (quantidade, PonteiroPrefeito);
+
+    votacao (quantidade, PonteiroPrefeito, PonteiroVotoBranco, PonteiroVotoNulo);
+
+    resultado (quantidade, PonteiroPrefeito, PonteiroVotoBranco, PonteiroVotoNulo);
+}
