@@ -64,6 +64,7 @@ int main ()
     int candidatoOuBranco;
     int candidatoOuArrumar;
     bool invalidar = true;
+    int continuarOuArrumar;
 
     int numeroAuxiliar;
 
@@ -105,10 +106,14 @@ int main ()
 
             if (invalidar == true)
             {
-                votoInvalido++;
                 cout << "Voto Invalido!" << endl;
+                cout << "CONTINUAR |1| ou ARRUMAR |2|? ";
+                cin >> continuarOuArrumar;
+                if (continuarOuArrumar == 1)
+                {
+                    votoInvalido++;
+                }
             }
-
         }
 
         else
@@ -134,9 +139,6 @@ int main ()
 }
 
 /*
-CORRIGIR BUGS
-- corrigir voto
-
 MELHORAR
 - usar funções
 - usar ponteiros
